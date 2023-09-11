@@ -1,0 +1,5 @@
+AuthType shibboleth
+AuthType "RIT"
+ShibRequireSession On
+SSLRequireSSL
+require valid-user
