@@ -1,0 +1,13 @@
+h1{
+    color:red;
+    font-family: sans-serif;
+    border-bottom: 1px solid red;
+}
+blockquote{
+    background-color: lightblue;
+    padding: 1rem;
+}
+body{
+    background-color:#ECE0CA;
+}
+img.side{float: right; margin: 0 12px;}
