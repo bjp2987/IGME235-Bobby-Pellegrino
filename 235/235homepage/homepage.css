@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body{
+    background-color: lightgray;;
+}
+main{
+    margin: 0 auto;
+    width: 50vw;
+    height: 100vh;
+    background-color: lightgreen;
+    border: 1px;
+}
+p{
+    font-family: Arial, sans-serif;
+}
+.information{
+    background-color: orange;
+    float: left;
+    width: 200px;
+    margin: 5px;
+    padding: 1rem;
+    font-family: 'Roboto', sans-serif;
+}
+.information p{
+    font-family: 'Roboto', sans-serif;
+}
+.classwork{
+    font-family: Arial, sans-serif;
+    float: left;
+}
+#Projects{
+    background-color: yellow;
+    padding: 1rem;
+    margin: 10px;
+}
+#GitHub{
+    background-color: darkgray;
+    color: purple;
+    padding: 1rem;
+    margin: 10px;
+}
