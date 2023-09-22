@@ -1,0 +1,33 @@
+h2, h3{
+    border-bottom: 1px solid red;
+}
+h2{
+    clear:both;
+}
+figure{
+    float: right;
+    width: 40%;
+    margin: 10px;
+}
+figure img{
+    width:100%;
+    margin: 10px;
+}
+.tet{
+    float: left;
+    width: 10%;
+    border: 5px solid black;
+    margin: 10px;
+}
+.tet img{
+    width:50%;
+}
+.name{
+    clear:both;
+}
+footer{
+    clear: both;
+    position: fixed;
+    top: 1px;
+    right: 1px;
+}
