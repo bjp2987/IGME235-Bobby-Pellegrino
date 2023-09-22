@@ -1,14 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 body{
-    background-color: lightgray;;
+    background-color: lightgray;
 }
 main{
     margin: 0 auto;
     width: 50vw;
     height: 100vh;
     background-color: lightgreen;
-    border: 1px;
+    border: 10px;
+    padding: 20px;
 }
 p{
     font-family: Arial, sans-serif;
@@ -32,10 +33,17 @@ p{
     background-color: yellow;
     padding: 1rem;
     margin: 10px;
+    width: 250px;
 }
 #GitHub{
     background-color: darkgray;
     color: purple;
     padding: 1rem;
     margin: 10px;
+}
+
+img{
+    position: relative;
+    bottom: 50px;
+    float: right;
 }
