@@ -15,7 +15,6 @@ header, main, footer{
 }
 .tet{
     flex: 0 1 450px;
-    border: 1px solid black;
     text-align: center;
 }
 .tet img{
