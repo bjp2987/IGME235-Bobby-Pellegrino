@@ -1,0 +1,73 @@
+body{
+    margin: 0 auto;
+    width: 65vw;
+}
+#wrapper{
+    display:grid;
+    grid-template-areas:
+    "header header"
+    "showcase1 showcase2"
+    "additionalShowcase showcase3";
+    grid-gap: 1.5em;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+#header{
+    grid-area: header;
+    text-align: center;
+    margin-bottom: 0;
+}
+#header img{
+    max-width: 20%;
+    margin: 0;
+    margin-bottom: 0;
+    float: left;
+}
+#header h1{
+    font-size: 5vw;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: tan;
+}
+#header p{
+    background-color: #7A72A5;
+    padding: 0.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: white;
+    display: inline-block;
+    font-size: xx-large;
+    margin-left: 11vw;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.showcase img{
+    max-width: 60%;
+    margin: 0;
+    float: right;
+}
+.showcase h2{
+    color: #2D396D;
+    margin-top: 0;
+}
+.showcase1{
+    grid-area: showcase1;
+}
+.showcase2{
+    grid-area: showcase2;
+}
+.showcase3{
+    grid-area: showcase3;
+}
+#additionalShowcase{
+    grid-area: additionalShowcase;
+    background-color: #988C74;
+    color: #35386C;
+    padding: 1rem;
+}
+#additionalShowcase h2{
+    color: white;
+}
+img{
+    margin-top: 0;
+}
