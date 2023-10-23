@@ -2,7 +2,7 @@
 
 body{
     margin: 0 auto;
-    width: 65vw;
+    width: 70vw;
     font-family: 'Roboto', sans-serif;
     background-color: lightgreen;
 }
@@ -11,11 +11,21 @@ body{
     grid-template-areas:
     "nav nav"
     "header header"
+    "intro intro"
+    "games games"
     "showcase1 showcase2"
-    "additionalShowcase showcase3";
+    "additionalShowcase showcase3"
+    "footer footer";
     grid-gap: 1.5em;
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr;
+}
+p{
+    font-size: large;
+}
+#navigation{
+    margin-top: 0;
+    margin-left: -2rem;
 }
 #navigation ul{
     grid-area: nav;
@@ -23,29 +33,28 @@ body{
     margin: 0;
     padding: 0;
     display: grid;
-    grid-gap: 20px;
+    grid-gap: 0.25rem;
     grid-template-columns: 1fr 1fr 1fr;
 }
 #navigation li{
     display: block;
     text-decoration: none;
-    flex-grow: 1;
-    background: #004000;
+    font-size: large;
+    flex-grow: 0;
+    flex-shrink: 1;
+    background: lightblue;
     color: white;
-    padding: 1rem;
+    padding: 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     width: 100%;
     text-align: center;
+    border: solid 1px black;
 }
 #header{
     grid-area: header;
     text-align: center;
     margin-bottom: 0;
-}
-#header img{
-    max-width: 20%;
-    margin: 0;
-    margin-bottom: 0;
-    float: left;
 }
 #header h1{
     font-size: 5vw;
@@ -64,6 +73,22 @@ body{
     margin-top: 0;
     margin-bottom: 0;
 }
+#intro{
+    grid-area: intro;
+}
+#intro p{
+    padding: 0.5rem;
+    padding-right: 2rem;
+}
+#intro img{
+    max-width: 20%;
+    margin: 1rem;
+    float: left;
+}
+#games{
+    grid-area: games;
+    text-align: center;
+}
 .showcase img{
     max-width: 60%;
     margin: 0.5rem;
@@ -72,6 +97,9 @@ body{
 .showcase h2{
     color: blue;
     margin-top: 0;
+}
+.showcase p{
+    padding: 0.5rem;
 }
 .showcase1{
     grid-area: showcase1;
@@ -96,20 +124,40 @@ body{
     margin: 0.5rem;
     float: right;
 }
+#additionalShowcase a{
+    background-color: white;
+}
+#footer{
+    grid-area: footer;
+    padding: 0.5rem;
+}
 img{
     margin-top: 0;
 }
+a:link { color: blue;}
+a:visited { color: purple;}
+a:focus { color: darkcyan;}
+a:hover { color: darkred;}
+a:active { color: darkred;}
 
-@media screen and (max-width:780px){
+@media screen and (max-width:800px){
     body{
         width: 100vw;
     }
     #wrapper{
+        width:100vw;
         grid-template-areas:
-        "nav" "header" "showcase1" "showcase2" "showcase3" "additionalShowcase";
+        "nav" "header" "intro" "games"
+        "showcase1" "showcase2" "showcase3" "additionalShowcase" "footer";
         grid-gap: 0;
-        grid-template-rows: auto 1fr 2fr 2fr 2fr 2fr;
+        grid-template-rows: repear(9, auto);
         grid-template-columns: 1fr;
+    }
+    #navigation ul{
+        width:100vw;
+    }
+    #navigation li{
+        font-size: 3vw;
     }
     #header h1{
         font-size: 10vw;
