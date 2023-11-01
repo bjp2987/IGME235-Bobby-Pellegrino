@@ -33,6 +33,14 @@ p.addEventListener("click",changeStyle); // now three functions will be called w
 div.addEventListener("click",changeText);
 div.addEventListener("click",changeColor);
 
+let messWithDiv = (e) => { 
+			   div.removeEventListener("click",changeText);
+			   div.removeEventListener("click",changeColor);
+			   div.addEventListener("click",changeStyle);
+			};
+
+p.addEventListener("click",messWithDiv);
+
 </script>
 </body>
 </html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mario Random Quote Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body{
+            background: black;
+            width: 100%;
+            margin: 0 auto;
+            color: white;
+        }
+        #wrapper{
+            background-image: url("mario64.jpg");
+            height: 75vh;
+            font-family: 'Roboto', Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-items: center;
+        }
+        h1{
+            font-size: xxx-large;
+        }
+        #wrapper p{
+            background-color: skyblue;
+            font-size: xx-large;
+            padding: 1rem;
+        }
+        button{
+            background-color: lightgray;
+            color: black;
+            border: none;
+            padding: 10px 10px;
+            font-size: large;
+            cursor: pointer;
+            transition-duration: 0.6s;
+        }
+        button:hover{
+            background-color: blue;
+            color: white;
+        }
+        button:active{
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+<h1>Mario Random Quote Generator</h1>
+<p>Press the button to begin.</p>
+<button>Generate quote!</button>
+</div>
+<p>Made by Bobby Pellegrino</p>
+</body>
+<script>
+"use strict";
+
+let quotes = [];
+quotes[0] = "It's-a me, Mario!";
+quotes[1] = "Mamma mia!";
+quotes[2] = "Press Start to Play!";
+quotes[3] = "Here we go!";
+quotes[4] = "Oh, nice computer you got here! Can I have it?";
+quotes[5] = "Mario thinks you're fantastic!";
+quotes[6] = "I guess I'm-a go fishing. Come here fishy-fishy! Here, fishy-fishy!";
+quotes[7] = "Thank you so much for-to-playing my game.";
+quotes[8] = "Point to Mario!";
+console.log(quotes[0]);
+
+let p = document.querySelector("p");
+window.onload = displayQuote;
+
+function displayQuote(){
+    p.innerHTML = quotes[Math.floor(Math.random() * quotes.length)];
+};
+
+let button = document.querySelector("button");
+
+button.addEventListener("click", displayQuote);
+</script>
+</html>
