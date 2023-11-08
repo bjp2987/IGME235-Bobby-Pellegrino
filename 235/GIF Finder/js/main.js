@@ -84,14 +84,14 @@ function dataLoaded(e){
     //9
     let results = obj.data;
     console.log("results.length = " + results.length);
-    let bigString = "<p><i>Here are " + results.length + " results for '" + displayTerm + "'</i></p>";
+    let bigString = "";
 
     //10
     for(let i = 0; i < results.length; i++){
         let result = results[i];
     
         //11
-        let smallURL = result.images.fixed_width_small.url;
+        let smallURL = result.images.fixed_width_downsampled.url;
         if(!smallURL) smallURL = "images/no-image-found.png";
 
         //12
@@ -99,8 +99,8 @@ function dataLoaded(e){
 
         //13
         let line = `<div class = 'result'><img src='${smallURL}' title= '${result.id}' />`;
-        line += `<span><a target='_blank' href='${url}'>View on Giphy</a></span>`;
-        line += `<p>Rating: ${result.rating.toUpperCase()}<p></div>`;
+        line += `<span><a target='_blank' href='${url}'>View on Giphy</a>`;
+        line += `<p>Rating: ${result.rating.toUpperCase()}<p></span></div>`;
 
         ////14
         //var line = "<div class='result'>";
@@ -120,7 +120,7 @@ function dataLoaded(e){
     document.querySelector("#content").innerHTML = bigString;
 
     //17
-    document.querySelector("#status").innerHTML = "<b>Success!</b>";
+    document.querySelector("#status").innerHTML = "<b>Success!</b><p><i>Here are " + results.length + " results for '" + displayTerm + "'</i></p>";
 }
 
 function dataError(e){

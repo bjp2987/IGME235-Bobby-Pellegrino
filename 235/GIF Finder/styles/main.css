@@ -17,37 +17,58 @@ header h1{
  
 #status{
     font-style: italic;
-    height:32px;
-}
- 
-.result {
-    position: relative;
-    height: 175px;
-    width: 100px;
-    float:left;
-    border:1px solid gray;
-    padding:5px;
-    margin-left:10px;
-    margin-bottom:10px;
 }
 
-.result img {
-    position: absolute;
-    left: 5px;
-    bottom: 5px;
-    display:block;
-    
+#content{
+    margin: 0 auto;
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 10px;
+}
+
+.result{
+    display: flex;
+    flex-direction: column;
+}
+
+.result img{
+    width: 100%;
+    box-shadow: 0 4px 11px 0;
 }
 
 .result span{
-    font-size:12px;
-    font-weight:bold;
-    display:block;
+    order:-1;
 }
-
-.result audio{
-    width: 130px;
-}
+ 
+/*.result {
+/*    position: relative;
+/*    height: 175px;
+/*    width: 100px;
+/*    float:left;
+/*    border:1px solid gray;
+/*    padding:5px;
+/*    margin-left:10px;
+/*    margin-bottom:10px;
+/*}
+/*
+/*.result img {
+/*    position: absolute;
+/*    left: 5px;
+/*    bottom: 5px;
+/*    display:block;
+/*    
+/*}
+/*
+/*.result span{
+/*    font-size:12px;
+/*    font-weight:bold;
+/*    display:block;
+/*}
+/*
+/*.result audio{
+/*    width: 130px;
+/*} */
 
 button{
   display : inline-block;
