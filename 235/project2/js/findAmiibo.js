@@ -53,11 +53,31 @@ function dataLoaded(e){
 
     console.log(amiibos);
 
-    if(amiibos = null || amiibos.length == 0){
-        document.querySelector("#status").innerHTML = "No results found.";
+    if(amiibos == null || amiibos.length == 0){
+        document.querySelector("#content").innerHTML = "No results.";
     }
-    
+
+    let bigString = "<p>Here are the results:<p>";
+
     for(position in amiibos){
-        console.log(amiibos[position].name);
+        let result = amiibos[position];
+        bigString += `<div class = 'amiibo'><h3>${result.name}</h3>`;
+        bigString += `<img src='${result.image}' title='${result.name}' />`;
+        bigString += `<p>Amiibo Line: ${result.amiiboSeries}</p>`;
+        bigString += `<p>Game Series: ${result.gameSeries}</p>`;
+        bigString += `<p>${result.release.na}</p>`;
+        bigString += `<p>${result.release.eu}</p>`;
+        bigString += `<p>${result.release.jp}</p>`;
+        bigString += `<p>${result.release.au}</p>`;
+        bigString += `<p>Type: ${result.type}</p></div>`;
+        
     }
+
+    document.querySelector("#content").innerHTML = bigString;
+
+    document.querySelector("#status").innerHTML = "Amiibo found!";
+}
+
+function presentReleaseDate(date){
+    return date;
 }
