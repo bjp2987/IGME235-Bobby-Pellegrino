@@ -21,7 +21,7 @@ function getData(){
         url += `&name=${nameTerm}`;
     }
     if(amiiboLineTerm.length >= 1){
-        url += `&amiiboseries=${amiiboLineTerm}`; 
+        url += `&amiiboSeries=${amiiboLineTerm}`; 
     }
     if(gameTerm.length >= 1){
         url += `&gameseries=${gameTerm}`;
@@ -55,6 +55,8 @@ function dataLoaded(e){
 
     if(amiibos == null || amiibos.length == 0){
         document.querySelector("#content").innerHTML = "No results.";
+        document.querySelector("#status").innerHTML = "No amiibo found.";
+        return;
     }
 
     let bigString = "<p>Here are the results:<p>";
@@ -65,12 +67,11 @@ function dataLoaded(e){
         bigString += `<img src='${result.image}' title='${result.name}' />`;
         bigString += `<p>Amiibo Line: ${result.amiiboSeries}</p>`;
         bigString += `<p>Game Series: ${result.gameSeries}</p>`;
-        bigString += `<p>${result.release.na}</p>`;
-        bigString += `<p>${result.release.eu}</p>`;
-        bigString += `<p>${result.release.jp}</p>`;
-        bigString += `<p>${result.release.au}</p>`;
+        bigString += `<p>${presentReleaseDate(result.release.na)}</p>`;
+        bigString += `<p>${presentReleaseDate(result.release.eu)}</p>`;
+        bigString += `<p>${presentReleaseDate(result.release.jp)}</p>`;
+        bigString += `<p>${presentReleaseDate(result.release.au)}</p>`;
         bigString += `<p>Type: ${result.type}</p></div>`;
-        
     }
 
     document.querySelector("#content").innerHTML = bigString;
@@ -79,5 +80,10 @@ function dataLoaded(e){
 }
 
 function presentReleaseDate(date){
-    return date;
+    if(date == null){
+        return "N/A";
+    }
+    else{
+        return date;
+    }
 }
