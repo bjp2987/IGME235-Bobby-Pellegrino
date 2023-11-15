@@ -3,11 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Amiibo</title>
+    <title>Cool Name</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <script src="js/findAmiibo.js"></script>
 </head>
 <body>
-    
+
+<h1>Find Amiibo</h1>
+
+<div id="searchbars">
+    <p>Name: <input id="namesearch" type="text" maxlength="20" autofocus value="Mario"></p>
+    <p>Amiibo Line: <input id="linesearch" type="text" maxlength="20" autofocus value=""></p>
+    <p>Game Series: <input id="gamesearch" type="text" maxlength="20" autofocus value=""></p>
+    <select id="amiibotype">
+        <option value="figure">Figure</option>
+        <option value="card">Card</option>
+        <option value="band">Armband</option>
+        <option value="yarn">Yarn</option>
+    </select>
+    <button type="button" id="search">Search</button>
+</div>
+
+<div id="status">Type into any of the search fields or select from the drop-down to search for Amiibo!</div>
+
+<h2>Results</h2>
+<div id="content">
+<p>No data yet.</p>
+</div>
+
 </body>
 </html>

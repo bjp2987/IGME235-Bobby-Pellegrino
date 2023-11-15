@@ -29,11 +29,35 @@ function getData(){
     
     url += `&type=${typeTerm}`;
 
+    console.log(url);
+
     document.querySelector("#status").innerHTML = "Searching for Amiibo...";
 
-    //let xhr = new XMLHttpRequest();
-    //xhr.onload = dataLoaded;
-    //xhr.onerror = dataError;
-    //xhr.open("GET",url);
-    //xhr.send();
+    let xhr = new XMLHttpRequest();
+    xhr.onload = dataLoaded;
+    xhr.onerror = dataError;
+    xhr.open("GET",url);
+    xhr.send();
+}
+
+function dataError(e){
+    console.log("Something went wrong.");
+}
+
+function dataLoaded(e){
+    let xhr = e.target;
+    let obj = JSON.parse(xhr.responseText);
+    //console.log(obj);
+    //console.log(obj.length);
+    let amiibos = obj.amiibo;
+
+    console.log(amiibos);
+
+    if(amiibos = null || amiibos.length == 0){
+        document.querySelector("#status").innerHTML = "No results found.";
+    }
+    
+    for(position in amiibos){
+        console.log(amiibos[position].name);
+    }
 }
