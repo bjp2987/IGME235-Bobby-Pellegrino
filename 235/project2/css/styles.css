@@ -1,0 +1,24 @@
+#content{
+    margin: 0 auto;
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,300px);
+    gap: 10px;
+    margin-bottom: 3rem;
+}
+.amiibo{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    padding: 0.5rem;
+}
+
+.amiibo img{
+    width: 60%;
+    padding: 0.25rem;
+    align-self: center;
+}
+
+h3{
+    text-align: center;
+}

@@ -59,7 +59,9 @@ function dataLoaded(e){
         return;
     }
 
-    let bigString = "<p>Here are the results:<p>";
+    document.querySelector("#content").innerHTML = "<p>Here are the results:</p>";
+
+    let bigString = "";
 
     for(position in amiibos){
         let result = amiibos[position];
@@ -67,11 +69,12 @@ function dataLoaded(e){
         bigString += `<img src='${result.image}' title='${result.name}' />`;
         bigString += `<p>Amiibo Line: ${result.amiiboSeries}</p>`;
         bigString += `<p>Game Series: ${result.gameSeries}</p>`;
-        bigString += `<p>${presentReleaseDate(result.release.na)}</p>`;
-        bigString += `<p>${presentReleaseDate(result.release.eu)}</p>`;
-        bigString += `<p>${presentReleaseDate(result.release.jp)}</p>`;
-        bigString += `<p>${presentReleaseDate(result.release.au)}</p>`;
-        bigString += `<p>Type: ${result.type}</p></div>`;
+        bigString += `<h4>Release Dates:</h4><ul>`
+        bigString += `<li>${presentReleaseDate(result.release.na, "NA")}</li>`;
+        bigString += `<li>${presentReleaseDate(result.release.eu, "EU")}</li>`;
+        bigString += `<li>${presentReleaseDate(result.release.jp, "JP")}</li>`;
+        bigString += `<li>${presentReleaseDate(result.release.au, "AU")}</li></ul>`;
+        bigString += `Type: ${result.type}</div>`;
     }
 
     document.querySelector("#content").innerHTML = bigString;
@@ -79,11 +82,11 @@ function dataLoaded(e){
     document.querySelector("#status").innerHTML = "Amiibo found!";
 }
 
-function presentReleaseDate(date){
+function presentReleaseDate(date, location){
     if(date == null){
-        return "N/A";
+        return `${location}: N/A`;
     }
     else{
-        return date;
+        return `${location}: ${date}`;
     }
 }
