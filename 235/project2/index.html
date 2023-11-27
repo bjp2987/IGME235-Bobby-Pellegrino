@@ -3,23 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cool Name</title>
+    <title>Find Amiibo</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <script src="js/findAmiibo.js"></script>
 </head>
 <body>
 
-<h1>Find <img src="images/Amiibo_logo.png"></h1>
+<h1>Find <img src="images/Amiibo_logo.png" alt=""></h1>
+
+<div id="explanation">
+    <p>Type into any or none of the search fields, and select from the type dropdown to search for Amiibo!</p>
+    <p>Some explanations for certain things you will see:</p>
+    <ul><li>"Amiibo Line" means the franchise the Amiibo is a part of, such as Super Smash Bros.</li>
+    <li>"Game Series" is the game or game franchise the character is from.</li>
+    <li>"NA" is North America, "EU" is Europe, "JP" is Japan, and "AU" is Australia.</li></ul>
+</div>
 
 <div id="searchbars">
-    <p>Name: <input id="namesearch" type="text" maxlength="100" autofocus value="Mario"></p>
-    <p>Amiibo Line: <input id="linesearch" type="text" maxlength="100" autofocus value=""></p>
-    <p>Game Series: <input id="gamesearch" type="text" maxlength="100" autofocus value=""></p>
+    <p>Name: <input id="namesearch" type="text" maxlength="100" autofocus value=""></p>
+    <p>Amiibo Line: <input id="linesearch" type="text" maxlength="100" value=""></p>
+    <p>Game Series: <input id="gamesearch" type="text" maxlength="100" value=""></p>
     <select id="amiibotype">
         <option value="figure">Figure</option>
         <option value="card">Card</option>
         <option value="band">Armband</option>
         <option value="yarn">Yarn</option>
+        <option value="all">All</option>
     </select>
     <button type="button" id="search">Search</button>
 </div>
@@ -44,6 +53,7 @@ Type: Figure</div>
 
 <footer>
 <p>Created by Bobby Pellegrino using AmiiboAPI.</p>
+<a href="doc.html">Documentation</a>
 </footer>
 
 </body>

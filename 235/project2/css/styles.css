@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+
 body{
     background-color: lightcoral;
+    font-family: 'Roboto', 'Arial', sans-serif;
 }
 
 h1{
@@ -43,11 +46,7 @@ h2{
     display: flex;
     flex-direction: column;
     border: 2px solid black;
-    padding: 0.5rem;
-}
-
-.amiibo p{
-    margin: 0;
+    padding: 0.7rem;
 }
 
 .amiibo img{
@@ -66,4 +65,19 @@ footer{
 
 footer p{
     font-weight: bold;
+}
+
+#explanation{
+    margin: 0 auto;
+    padding: 10px;
+    min-width: 400px;
+    max-width: 40%;
+    background-color: white;
+}
+ul{
+    margin: 0.25rem;
+}
+
+li{
+    margin: 0.5rem;
 }
