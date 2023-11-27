@@ -11,15 +11,15 @@ document.body.appendChild(app.view);
 const sceneWidth = app.view.width;
 const sceneHeight = app.view.height;	
 
-// pre-load the images (this code works with PIXI v6)
-app.loader.
-    add([
-        "images/spaceship.png",
-        "images/explosions.png"
-    ]);
-app.loader.onProgress.add(e => { console.log(`progress=${e.progress}`) });
-app.loader.onComplete.add(setup);
-app.loader.load();
+//// pre-load the images (this code works with PIXI v6)
+//app.loader.
+//    add([
+//        "images/spaceship.png",
+//        "images/explosions.png"
+//    ]);
+//app.loader.onProgress.add(e => { console.log(`progress=${e.progress}`) });
+//app.loader.onComplete.add(setup);
+//app.loader.load();
 
 // pre-load the images (this code works with PIXI v7)
 // let assets;
@@ -109,8 +109,8 @@ function setup() {
 function createLabelsAndButtons(){
     let buttonStyle = new PIXI.TextStyle({
         fill: 0xFF0000,
-        fontSize: 48,
-        fontFamily: "Verdana"
+        fontSize: 20,
+        fontFamily: "Press Start 2P"
     });
 
     //1 set up "startScene"
@@ -118,12 +118,12 @@ function createLabelsAndButtons(){
     let startLabel1 = new PIXI.Text("Circle Blast!");
     startLabel1.style = new PIXI.TextStyle({
         fill: 0xFFFFFF,
-        fontSize: 96,
-        fontFamily: "Verdana",
+        fontSize: 40,
+        fontFamily: "Press Start 2P",
         stroke: 0xFF0000,
         strokeThickness: 6
     });
-    startLabel1.x = 50;
+    startLabel1.x = 40;
     startLabel1.y = 120;
     startScene.addChild(startLabel1);
 
@@ -131,20 +131,20 @@ function createLabelsAndButtons(){
     let startLabel2 = new PIXI.Text("R U Worthy...?");
     startLabel2.style = new PIXI.TextStyle({
         fill: 0xFFFFFF,
-        fontSize: 32,
-        fontFamily: "Verdana",
+        fontSize: 20,
+        fontFamily: "Press Start 2P",
         fontStyle: "italic",
         stroke: 0xFF0000,
         strokeThickness: 6
     });
-    startLabel2.x = 185;
+    startLabel2.x = 140;
     startLabel2.y = 300;
     startScene.addChild(startLabel2);
 
     //1C make start game button
     let startButton = new PIXI.Text("Enter, ... if you  dare!");
     startButton.style = buttonStyle;
-    startButton.x = 80;
+    startButton.x = 60;
     startButton.y = sceneHeight - 100;
     startButton.interactive = true;
     startButton.buttonMode = true;
@@ -183,7 +183,7 @@ function createLabelsAndButtons(){
     textStyle = new PIXI.TextStyle({
 	    fill: 0xFFFFFF,
 	    fontSize: 64,
-	    fontFamily: "Futura",
+	    fontFamily: "Press Start 2P",
 	    stroke: 0xFF0000,
 	    strokeThickness: 6
     });
