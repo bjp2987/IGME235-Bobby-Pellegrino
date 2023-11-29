@@ -23,17 +23,51 @@ class Circle extends PIXI.Graphics{
         this.isAlive = true;
     }
 
+    // abstract method - declared, but no implementation
+    activate(){
+
+    }
+
     move(dt=1/60){
         this.x += this.fwd.x * this.speed * dt;
         this.y += this.fwd.y * this.speed * dt;
     }
 
-    reflectX(){
+    reflectX(sceneWidth){
         this.fwd.x *= -1;
     }
 
-    reflectY(){
+    reflectY(sceneHeight){
         this.fwd.y *= -1;
+    }
+
+    //protected methods
+    _wrapX(sceneWidth){
+        if(this.fwd.x < 0 && this.x < 0 - this.radius){
+            this.x = sceneWidth + this.radius;
+        }
+        if(this.fwd.x > 0 && this.x > sceneWidth + this.radius){
+            this.x = 0 - this.radius;
+        }
+    }
+
+    _wrapY(sceneHeight){
+        if(this.fwd.y < 0 && this.y < 0 - this.radius){
+            this.y = sceneHeight + this.radius;
+        }
+        if(this.fwd.y > 0 && this.y > sceneHeight + this.radius){
+            this.y = 0 - this.radius;
+        }
+    }
+}
+
+class WrappingCircle extends Circle{
+    reflectX(sceneWidth){
+        this._wrapX(sceneWidth);
+    }
+
+    reflectY(sceneHeight){
+        this._wrapY(sceneHeight);
     }
 }
 

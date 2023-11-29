@@ -156,7 +156,7 @@ function createLabelsAndButtons(){
     //2 set up "gameScene"
     let textStyle = new PIXI.TextStyle({
         fill: 0xFFFFFF,
-        fontSize: 18,
+        fontSize: 14,
         fontFamily: "Verdana",
         stroke: 0xFF0000,
         strokeThickness: 4
@@ -179,22 +179,22 @@ function createLabelsAndButtons(){
 
     // 3 - set up `gameOverScene`
     // 3A - make game over text
-    let gameOverText = new PIXI.Text("Game Over!\n        :-O");
+    let gameOverText = new PIXI.Text("Game Over!\n\n   :-O");
     textStyle = new PIXI.TextStyle({
 	    fill: 0xFFFFFF,
-	    fontSize: 64,
+	    fontSize: 25,
 	    fontFamily: "Press Start 2P",
 	    stroke: 0xFF0000,
 	    strokeThickness: 6
     });
     gameOverText.style = textStyle;
-    gameOverText.x = 100;
+    gameOverText.x = 160;
     gameOverText.y = sceneHeight/2 - 160;
     gameOverScene.addChild(gameOverText);
 
     gameOverSceneLabel = new PIXI.Text("");
     gameOverSceneLabel.style = textStyle;
-    gameOverSceneLabel.x = 60;
+    gameOverSceneLabel.x = 40;
     gameOverSceneLabel.y = sceneHeight/2 + 10;
     gameOverScene.addChild(gameOverSceneLabel);
 
@@ -263,12 +263,12 @@ function gameLoop(){
 	for(let c of circles){
         c.move(dt);
         if(c.x <= c.radius || c.x >= sceneWidth - c.radius){
-            c.reflectX();
-            c.move(dt);
+            c.reflectX(sceneWidth);
+            //c.move(dt);
         }
         if(c.y <= c.radius || c.y >= sceneHeight - c.radius){
-            c.reflectY();
-            c.move(dt);
+            c.reflectY(sceneHeight);
+            //c.move(dt);
         }
     }
 	
@@ -332,6 +332,34 @@ function createCircles(numCircles){
         let c = new Circle(10,0xFFFF00);
         c.x = Math.random() * (sceneWidth - 50) + 25;
         c.y = Math.random() * (sceneHeight - 400) + 25;
+        circles.push(c);
+        gameScene.addChild(c);
+    }
+
+    //orthogonal circles
+    for(let i = 0; i < numCircles/4; i++){
+        let c = new Circle(10, 0x00FFFF);
+        c.speed = Math.random() * 100 + 100;
+        if(Math.random() < .5){
+            c.x = Math.random() * (sceneWidth - 50) + 25;
+            c.y = Math.random() * 100 + c.radius;
+            c.fwd = {x:0,y:1}
+        }
+        else{
+            c.x = Math.random() * 25 + c.radius;
+            c.y = Math.random() * (sceneHeight - 80) - c.radius;
+            c.fwd = {x:1, y:0};
+        }
+        circles.push(c);
+        gameScene.addChild(c);
+    }
+
+    //wrapping circles
+    for(let i = 0; i < numCircles/4; i++){
+        let c = new WrappingCircle(10,0xFF00FF);
+        c.x = Math.random() * (sceneWidth - 50) + 25;
+        c.y = Math.random() * (sceneHeight - 400) + 25;
+        c.speed = 60;
         circles.push(c);
         gameScene.addChild(c);
     }
