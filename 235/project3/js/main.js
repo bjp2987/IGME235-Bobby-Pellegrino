@@ -42,7 +42,7 @@ let stage;
 
 // game variables
 let startScene;
-let gameScene,ship,scoreLabel,lifeLabel,shootSound,hitSound,fireballSound;
+let gameScene,ship,scoreLabelP1, scoreLabelP2, lifeLabel,shootSound,hitSound,fireballSound;
 let gameOverScene;
 
 let circles = [];
@@ -50,7 +50,8 @@ let bullets = [];
 let aliens = [];
 let explosions = [];
 let explosionTextures;
-let score = 0;
+let P1Score = 0;
+let P2Score = 0;
 let life = 100;
 let levelNum = 1;
 let paused = true;
@@ -100,7 +101,7 @@ function setup() {
     app.ticker.add(gameLoop);
 	
 	// #9 - Start listening for click events on the canvas
-    app.view.onclick = fireBullet;
+    //app.view.onclick = fireBullet;
 	
 	// Now our `startScene` is visible
 	// Clicking the button calls startGame()
@@ -115,7 +116,7 @@ function createLabelsAndButtons(){
 
     //1 set up "startScene"
     //1A make top start label
-    let startLabel1 = new PIXI.Text("Circle Blast!");
+    let startLabel1 = new PIXI.Text("Crazy Pong");
     startLabel1.style = new PIXI.TextStyle({
         fill: 0xFFFFFF,
         fontSize: 40,
@@ -123,28 +124,39 @@ function createLabelsAndButtons(){
         stroke: 0xFF0000,
         strokeThickness: 6
     });
-    startLabel1.x = 40;
+    startLabel1.x = 90;
     startLabel1.y = 120;
     startScene.addChild(startLabel1);
 
     //1B make middle start label
-    let startLabel2 = new PIXI.Text("R U Worthy...?");
+    let startLabel2 = new PIXI.Text("P1: W for up,\nS for down");
     startLabel2.style = new PIXI.TextStyle({
-        fill: 0xFFFFFF,
+        fill: 0x0000FF,
         fontSize: 20,
         fontFamily: "Press Start 2P",
-        fontStyle: "italic",
-        stroke: 0xFF0000,
-        strokeThickness: 6
+        stroke: 0xFFFFFF,
+        strokeThickness: 4
     });
-    startLabel2.x = 140;
-    startLabel2.y = 300;
+    startLabel2.x = 100;
+    startLabel2.y = 250;
     startScene.addChild(startLabel2);
 
+    let startLabel3 = new PIXI.Text("P2: Arrow keys for\nup and down");
+    startLabel3.style = new PIXI.TextStyle({
+        fill: 0xFF0000,
+        fontSize: 20,
+        fontFamily: "Press Start 2P",
+        stroke: 0xFFFFFF,
+        strokeThickness: 4
+    });
+    startLabel3.x = 100;
+    startLabel3.y = 350;
+    startScene.addChild(startLabel3);
+
     //1C make start game button
-    let startButton = new PIXI.Text("Enter, ... if you  dare!");
+    let startButton = new PIXI.Text("Start Game");
     startButton.style = buttonStyle;
-    startButton.x = 60;
+    startButton.x = 190;
     startButton.y = sceneHeight - 100;
     startButton.interactive = true;
     startButton.buttonMode = true;
@@ -162,11 +174,19 @@ function createLabelsAndButtons(){
         strokeThickness: 4
     });
     //2A make score label
-    scoreLabel = new PIXI.Text();
-    scoreLabel.style = textStyle;
-    scoreLabel.x = 5;
-    scoreLabel.y = 5;
-    gameScene.addChild(scoreLabel);
+    scoreLabelP1 = new PIXI.Text();
+    scoreLabelP1.style = textStyle;
+    scoreLabelP1.x = 5;
+    scoreLabelP1.y = 5;
+    gameScene.addChild(scoreLabelP1);
+    increaseScoreBy(0);
+
+    //2A make score label
+    scoreLabelP2 = new PIXI.Text();
+    scoreLabelP2.style = textStyle;
+    scoreLabelP2.x = 5;
+    scoreLabelP2.y = 5;
+    gameScene.addChild(scoreLabelP2);
     increaseScoreBy(0);
 
     //2B make life label
@@ -175,7 +195,7 @@ function createLabelsAndButtons(){
     lifeLabel.x = 5;
     lifeLabel.y = 26;
     gameScene.addChild(lifeLabel);
-    decreaseLifeBy(0);
+    //decreaseLifeBy(0);
 
     // 3 - set up `gameOverScene`
     // 3A - make game over text
@@ -216,25 +236,26 @@ function startGame(){
     gameOverScene.visible = false;
     gameScene.visible = true;
     levelNum = 1;
-    score = 0;
+    P1Score = 0;
+    P2Score = 0;
     life = 100;
     increaseScoreBy(0);
-    decreaseLifeBy(0);
+    //decreaseLifeBy(0);
     ship.x = 300;
     ship.y = 550;
     loadLevel();
 }
 
 function increaseScoreBy(value){
-    score += value;
-    scoreLabel.text = `Score ${score}`;
+    P1Score += value;
+    scoreLabelP1.text = `${P1Score}`;
 }
 
-function decreaseLifeBy(value){
-    life -= value;
-    life = parseInt(life);
-    lifeLabel.text = `Life ${life}%`;
-}
+//function decreaseLifeBy(value){
+//    life -= value;
+//    life = parseInt(life);
+//    lifeLabel.text = `Life ${life}%`;
+//}
 
 function gameLoop(){
 	if (paused) return; // keep this commented out for now
@@ -299,7 +320,7 @@ function gameLoop(){
             hitSound.play();
             gameScene.removeChild(c);
             c.isAlive = false;
-            decreaseLifeBy(20);
+            //decreaseLifeBy(20);
         }
     }
 	
@@ -411,32 +432,32 @@ function end(){
     explosions.forEach(e=>gameScene.removeChild(e));
     explosions = [];
 
-    gameOverSceneLabel.text = `Your final Score: ${score}`;
+    gameOverSceneLabel.text = `Your final Score: ${P1Score}`;
 
     gameOverScene.visible = true;
     gameScene.visible = false;
 }
 
-function fireBullet(e){
-    // let rect = app.view.getBoundingClientRect();
-    // let mouseX = e.clientX - rect.x;
-    // let mouseY = e.clientY - rect.y;
-    // console.log(`${mouseX},${mouseY}`);
-    if (paused) return;
-
-    let b = new Bullet(0xFFFFFF, ship.x, ship.y);
-    bullets.push(b);
-    gameScene.addChild(b);
-    if(score >= 5){
-        let b1 = new Bullet(0xFFFFFF, ship.x + 10, ship.y);
-        let b2 = new Bullet(0xFFFFFF, ship.x - 10, ship.y);
-        bullets.push(b1);
-        bullets.push(b2);
-        gameScene.addChild(b1);
-        gameScene.addChild(b2);
-    }
-    shootSound.play();
-}
+//function fireBullet(e){
+//    // let rect = app.view.getBoundingClientRect();
+//    // let mouseX = e.clientX - rect.x;
+//    // let mouseY = e.clientY - rect.y;
+//    // console.log(`${mouseX},${mouseY}`);
+//    if (paused) return;
+//
+//    let b = new Bullet(0xFFFFFF, ship.x, ship.y);
+//    bullets.push(b);
+//    gameScene.addChild(b);
+//    if(score >= 5){
+//        let b1 = new Bullet(0xFFFFFF, ship.x + 10, ship.y);
+//        let b2 = new Bullet(0xFFFFFF, ship.x - 10, ship.y);
+//        bullets.push(b1);
+//        bullets.push(b2);
+//        gameScene.addChild(b1);
+//        gameScene.addChild(b2);
+//    }
+//    shootSound.play();
+//}
 
 function loadSpriteSheet(){
     // the 16 animation frames in each row are 64x64 pixels
