@@ -9,51 +9,19 @@ document.body.appendChild(app.view);
 
 // constants
 const sceneWidth = app.view.width;
-const sceneHeight = app.view.height;	
-
-//// pre-load the images (this code works with PIXI v6)
-//app.loader.
-//    add([
-//        "images/spaceship.png",
-//        "images/explosions.png"
-//    ]);
-//app.loader.onProgress.add(e => { console.log(`progress=${e.progress}`) });
-//app.loader.onComplete.add(setup);
-//app.loader.load();
-
-// pre-load the images (this code works with PIXI v7)
-// let assets;
-// loadImages();
-// async function loadImages(){
-// // https://github.com/pixijs/pixijs/wiki/v7-Migration-Guide#-replaces-loader-with-assets
-// // https://pixijs.io/guides/basics/assets.html
-// PIXI.Assets.addBundle('sprites', {
-//   spaceship: 'images/spaceship.png',
-//   explosions: 'images/explosions.png',
-//   move: 'images/move.png'
-// });
-//
-// assets = await PIXI.Assets.loadBundle('sprites');
-// setup();
-// }
+const sceneHeight = app.view.height;
 
 // aliases
 let stage;
 
 // game variables
 let startScene;
-let gameScene,ship,scoreLabelP1, scoreLabelP2, lifeLabel,shootSound,hitSound,fireballSound;
+let gameScene, paddleP1, paddleP2, scoreLabelP1, scoreLabelP2,shootSound,hitSound,fireballSound;
 let gameOverScene;
 
 let circles = [];
-let bullets = [];
-let aliens = [];
-let explosions = [];
-let explosionTextures;
 let P1Score = 0;
 let P2Score = 0;
-let life = 100;
-let levelNum = 1;
 let paused = true;
 
 let gameOverSceneLabel;
@@ -77,9 +45,11 @@ function setup() {
 	// #4 - Create labels for all 3 scenes
 	createLabelsAndButtons();
 
-	// #5 - Create ship
-    ship = new Ship();
-    gameScene.addChild(ship);
+	//Create paddles
+    paddleP1 = new Paddle(70,10,0x0000FF,10,sceneWidth / 2);
+    gameScene.addChild(paddleP1);
+    paddleP2 = new Paddle(70,10,0xFF0000,580,sceneWidth / 2);
+    gameScene.addChild(paddleP2);
 
 	// #6 - Load Sounds
     shootSound = new Howl({
@@ -93,9 +63,6 @@ function setup() {
     fireballSound = new Howl({
 	    src: ['sounds/fireball.mp3']
     });
-	
-	// #7 - Load sprite sheet
-    explosionTextures = loadSpriteSheet();
 		
 	// #8 - Start update loop
     app.ticker.add(gameLoop);
@@ -175,27 +142,27 @@ function createLabelsAndButtons(){
     });
     //2A make score label
     scoreLabelP1 = new PIXI.Text();
-    scoreLabelP1.style = textStyle;
-    scoreLabelP1.x = 5;
+    scoreLabelP1.style = new PIXI.TextStyle({
+        fill: 0x0000FF,
+        fontSize: 40,
+        fontFamily: "Verdana",
+    });
+    scoreLabelP1.x = 160;
     scoreLabelP1.y = 5;
     gameScene.addChild(scoreLabelP1);
-    increaseScoreBy(0);
+    increaseP1ScoreBy(0);
 
     //2A make score label
     scoreLabelP2 = new PIXI.Text();
-    scoreLabelP2.style = textStyle;
-    scoreLabelP2.x = 5;
+    scoreLabelP2.style = new PIXI.TextStyle({
+        fill: 0xFF0000,
+        fontSize: 40,
+        fontFamily: "Verdana",
+    });;
+    scoreLabelP2.x = 360;
     scoreLabelP2.y = 5;
     gameScene.addChild(scoreLabelP2);
-    increaseScoreBy(0);
-
-    //2B make life label
-    lifeLabel = new PIXI.Text();
-    lifeLabel.style = textStyle;
-    lifeLabel.x = 5;
-    lifeLabel.y = 26;
-    gameScene.addChild(lifeLabel);
-    //decreaseLifeBy(0);
+    increaseP2ScoreBy(0);
 
     // 3 - set up `gameOverScene`
     // 3A - make game over text
@@ -235,27 +202,22 @@ function startGame(){
     startScene.visible = false;
     gameOverScene.visible = false;
     gameScene.visible = true;
-    levelNum = 1;
     P1Score = 0;
     P2Score = 0;
-    life = 100;
-    increaseScoreBy(0);
-    //decreaseLifeBy(0);
-    ship.x = 300;
-    ship.y = 550;
+    increaseP1ScoreBy(0);
+    increaseP2ScoreBy(0);
+    //establish position of paddles
     loadLevel();
 }
 
-function increaseScoreBy(value){
+function increaseP1ScoreBy(value){
     P1Score += value;
     scoreLabelP1.text = `${P1Score}`;
 }
-
-//function decreaseLifeBy(value){
-//    life -= value;
-//    life = parseInt(life);
-//    lifeLabel.text = `Life ${life}%`;
-//}
+function increaseP2ScoreBy(value){
+    P2Score += value;
+    scoreLabelP2.text = `${P2Score}`;
+}
 
 function gameLoop(){
 	if (paused) return; // keep this commented out for now
@@ -263,22 +225,6 @@ function gameLoop(){
 	// #1 - Calculate "delta time"
     let dt = 1/app.ticker.FPS;
     if (dt > 1/12) dt=1/12;
-	
-	// #2 - Move Ship
-    let mousePosition = app.renderer.plugins.interaction.mouse.global;
-    //ship.position = mousePosition;
-
-    let amt = 6 * dt; //at 60 FPS would move about 10% of distance per update
-
-    //lerp (linear interpolate) the x & y values with lerp()
-    let newX = lerp(ship.x, mousePosition.x, amt);
-    let newY = lerp(ship.y, mousePosition.y, amt);
-
-    //keep the ship on the screen with clamp()
-    let w2 = ship.width/2;
-    let h2 = ship.height/2;
-    ship.x = clamp(newX, 0+w2, sceneWidth-w2);
-    ship.y = clamp(newY, 0+h2, sceneHeight-h2);
 	
 	// #3 - Move Circles
 	for(let c of circles){
@@ -293,57 +239,24 @@ function gameLoop(){
         }
     }
 	
-	// #4 - Move Bullets
-    for(let b of bullets){
-        b.move(dt);
-    }
-	
 	// #5 - Check for Collisions
 	for (let c of circles){
-        for(let b of bullets){
-            //5A circles & bullets
-            if(rectsIntersect(c,b)){
-                fireballSound.play();
-                createExplosion(c.x,c.y,64,64);
-                gameScene.removeChild(c);
-                c.isAlive = false;
-                gameScene.removeChild(b);
-                b.isAlive = false;
-                increaseScoreBy(1);
-            }
 
-            if (b.y < -10) b.isAlive = false;
-        }
-
-        //5B circles & ship
-        if(c.isAlive && rectsIntersect(c,ship)){
-            hitSound.play();
-            gameScene.removeChild(c);
-            c.isAlive = false;
-            //decreaseLifeBy(20);
-        }
+        ////5B circles collision
+        //if(c.isAlive && rectsIntersect(c,)){
+        //    hitSound.play();
+        //    gameScene.removeChild(c);
+        //    c.isAlive = false;
+        //}
     }
 	
 	// #6 - Now do some clean up
-	
-    // get rid of dead bullets
-    bullets = bullets.filter(b=>b.isAlive);
 
     // get rid of dead circles
     circles = circles.filter(c=>c.isAlive);
-
-    // get rid of explosions
-    explosions = explosions.filter(e=>e.playing);
-	
-	// #7 - Is game over?
-    if (life <= 0){
-	    end();
-	    return; // return here so we skip #8 below
-    }
 	
 	// #8 - Load next level
     if (circles.length == 0){
-	    levelNum ++;
 	    loadLevel();
     }
 }
@@ -374,49 +287,10 @@ function createCircles(numCircles){
         circles.push(c);
         gameScene.addChild(c);
     }
-
-    //wrapping circles
-    for(let i = 0; i < numCircles/4; i++){
-        let c = new WrappingCircle(10,0xFF00FF);
-        c.x = Math.random() * (sceneWidth - 50) + 25;
-        c.y = Math.random() * (sceneHeight - 400) + 25;
-        c.speed = 60;
-        circles.push(c);
-        gameScene.addChild(c);
-    }
-
-    //seeking circles
-    for(let i=0; i < numCircles/3; i++){
-        let c = new SeekingCircle(5,0xFF0000);
-        c.x = Math.random() * (sceneWidth - 50) + 25;
-        c.y = Math.random() * (sceneHeight - 400) + 25;
-        c.speed = 60;
-        c.activate(ship);
-        circles.push(c);
-        gameScene.addChild(c);
-    }
-
-    //orthogonal wrapping circles
-    for(let i=0; i < numCircles/4; i++){
-        let c = new WrappingCircle(10,0x00FF00);
-        c.speed = Math.random() * 100 + 100;
-        if(Math.random() < .5){
-            c.x = Math.random() * (sceneWidth - 50) + 25;
-            c.y = Math.random() * 100 + c.radius * 2;
-            c.fwd = {x:0,y:1};
-        }
-        else{
-            c.x = Math.random() * 25 + c.radius * 2;
-            c.y = Math.random() * (sceneHeight - 80) - c.radius * 2;
-            c.fwd = {x:1,y:0};
-        }
-        circles.push(c);
-        gameScene.addChild(c);
-    }
 }
 
 function loadLevel(){
-	createCircles(levelNum * 5);
+	createCircles(5);
 	paused = false;
 }
 
@@ -426,68 +300,8 @@ function end(){
     circles.forEach(c=>gameScene.removeChild(c)); // concise arrow function with no brackets and no return
     circles = [];
 
-    bullets.forEach(b=>gameScene.removeChild(b));
-    bullets = [];
-
-    explosions.forEach(e=>gameScene.removeChild(e));
-    explosions = [];
-
     gameOverSceneLabel.text = `Your final Score: ${P1Score}`;
 
     gameOverScene.visible = true;
     gameScene.visible = false;
-}
-
-//function fireBullet(e){
-//    // let rect = app.view.getBoundingClientRect();
-//    // let mouseX = e.clientX - rect.x;
-//    // let mouseY = e.clientY - rect.y;
-//    // console.log(`${mouseX},${mouseY}`);
-//    if (paused) return;
-//
-//    let b = new Bullet(0xFFFFFF, ship.x, ship.y);
-//    bullets.push(b);
-//    gameScene.addChild(b);
-//    if(score >= 5){
-//        let b1 = new Bullet(0xFFFFFF, ship.x + 10, ship.y);
-//        let b2 = new Bullet(0xFFFFFF, ship.x - 10, ship.y);
-//        bullets.push(b1);
-//        bullets.push(b2);
-//        gameScene.addChild(b1);
-//        gameScene.addChild(b2);
-//    }
-//    shootSound.play();
-//}
-
-function loadSpriteSheet(){
-    // the 16 animation frames in each row are 64x64 pixels
-    // we are using the second row
-    // http://pixijs.download/release/docs/PIXI.BaseTexture.html
-    let spriteSheet = PIXI.BaseTexture.from("images/explosions.png");
-    let width = 64;
-    let height = 64;
-    let numFrames = 16;
-    let textures = [];
-    for(let i = 0; i < numFrames; i++){
-        // http://pixijs.download/release/docs/PIXI.Texture.html
-        let frame = new PIXI.Texture(spriteSheet, new PIXI.Rectangle(i*width, 64, width, height));
-        textures.push(frame);
-    }
-    return textures;
-}
-
-function createExplosion(x, y, frameWidth, frameHeight){
-    // http://pixijs.download/release/docs/PIXI.AnimatedSprite.html
-    // the animation frames are 64x64 pixels
-    let w2 = frameWidth / 2;
-    let h2 = frameHeight / 2;
-    let expl = new PIXI.AnimatedSprite(explosionTextures);
-    expl.x = x - w2; // we want the explosions to appear at the center of the circle
-    expl.y = y - h2; // ditto
-    expl.animationSpeed = 1 / 7;
-    expl.loop = false;
-    expl.onComplete = e => gameScene.removeChild(expl);
-    explosions.push(expl);
-    gameScene.addChild(expl);
-    expl.play();
 }
