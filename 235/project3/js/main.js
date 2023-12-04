@@ -24,6 +24,11 @@ let P1Score = 0;
 let P2Score = 0;
 let paused = true;
 
+//https://www.youtube.com/watch?v=cP-_beFbz_Q
+window.addEventListener("keydown",keysPressed);
+window.addEventListener("keyup",keysReleased);
+let keys = {};
+
 let gameOverSceneLabel;
 
 function setup() {
@@ -238,6 +243,23 @@ function gameLoop(){
             //c.move(dt);
         }
     }
+
+    //W
+    if(keys["87"]){
+        paddleP1.moveUp(dt);
+    }
+    //S
+    if(keys["83"]){
+        paddleP1.moveDown(dt);
+    }
+    //I or Num8
+    if(keys["73"] || keys["104"]){
+        paddleP2.moveUp(dt);
+    }
+    //K or Num2
+    if(keys["75"] || keys["98"]){
+        paddleP2.moveDown(dt);
+    }
 	
 	// #5 - Check for Collisions
 	for (let c of circles){
@@ -259,6 +281,16 @@ function gameLoop(){
     if (circles.length == 0){
 	    loadLevel();
     }
+}
+
+function keysPressed(e){
+    console.log(e.keyCode);
+    keys[e.keyCode] = true;
+}
+
+function keysReleased(e){
+    console.log(e.keyCode);
+    keys[e.keyCode] = false;
 }
 
 function createCircles(numCircles){

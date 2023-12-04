@@ -38,4 +38,12 @@ class Paddle extends PIXI.Graphics{
         this.height = height;
         this.width = width;
     }
+
+    moveUp(dt=1/60){
+        this.y -= 50 * dt;
+    }
+
+    moveDown(dt=1/60){
+        this.y += 50 * dt;
+    }
 }
