@@ -1,5 +1,5 @@
 class Circle extends PIXI.Graphics{
-    constructor(radius, color=0xFF0000, x=0, y=0){
+    constructor(radius, color=0xFF0000, speed=50, x=0, y=0){
         super();
         this.beginFill(color);
         this.drawCircle(0,0,radius);
@@ -9,7 +9,7 @@ class Circle extends PIXI.Graphics{
         this.radius = radius;
         //variables
         this.fwd = getRandomUnitVector();
-        this.speed = 50;
+        this.speed = speed;
         this.isAlive = true;
     }
 
@@ -37,13 +37,14 @@ class Paddle extends PIXI.Graphics{
         this.y = y;
         this.height = height;
         this.width = width;
+        this.speed = 250;
     }
 
     moveUp(dt=1/60){
-        this.y -= 50 * dt;
+        this.y -= this.speed * dt;
     }
 
     moveDown(dt=1/60){
-        this.y += 50 * dt;
+        this.y += this.speed * dt;
     }
 }

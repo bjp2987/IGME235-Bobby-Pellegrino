@@ -113,7 +113,7 @@ function createLabelsAndButtons(){
     startLabel2.y = 250;
     startScene.addChild(startLabel2);
 
-    let startLabel3 = new PIXI.Text("P2: Arrow keys for\nup and down");
+    let startLabel3 = new PIXI.Text("P2: I/Num8 for Up,\nK/Num2 for Down");
     startLabel3.style = new PIXI.TextStyle({
         fill: 0xFF0000,
         fontSize: 20,
@@ -225,7 +225,7 @@ function increaseP2ScoreBy(value){
 }
 
 function gameLoop(){
-	if (paused) return; // keep this commented out for now
+    if (paused) return; // keep this commented out for now
 	
 	// #1 - Calculate "delta time"
     let dt = 1/app.ticker.FPS;
@@ -234,10 +234,6 @@ function gameLoop(){
 	// #3 - Move Circles
 	for(let c of circles){
         c.move(dt);
-        if(c.x <= c.radius || c.x >= sceneWidth - c.radius){
-            c.reflectX(sceneWidth);
-            //c.move(dt);
-        }
         if(c.y <= c.radius || c.y >= sceneHeight - c.radius){
             c.reflectY(sceneHeight);
             //c.move(dt);
@@ -263,16 +259,28 @@ function gameLoop(){
 	
 	// #5 - Check for Collisions
 	for (let c of circles){
-
-        ////5B circles collision
-        //if(c.isAlive && rectsIntersect(c,)){
-        //    hitSound.play();
-        //    gameScene.removeChild(c);
-        //    c.isAlive = false;
-        //}
+        //5B circles collision
+        if(c.isAlive && rectsIntersect(c,paddleP1)){
+            c.reflectX(sceneWidth);
+        }
+        //5B circles collision
+        if(c.isAlive && rectsIntersect(c,paddleP2)){
+            c.reflectX(sceneWidth);
+        }
     }
 	
 	// #6 - Now do some clean up
+	for (let c of circles){
+        //5B circles collision
+        if(c.x <= -10){
+            increaseP2ScoreBy(1);
+            c.isAlive = false;
+        }
+        if(c.x >= sceneWidth + 10){
+            increaseP1ScoreBy(1);
+            c.isAlive = false;
+        }
+    }
 
     // get rid of dead circles
     circles = circles.filter(c=>c.isAlive);
@@ -295,7 +303,7 @@ function keysReleased(e){
 
 function createCircles(numCircles){
     for(let i=0; i<numCircles; i++){
-        let c = new Circle(10,0xFFFF00);
+        let c = new Circle(10,0xFFFF00, 100);
         c.x = Math.random() * (sceneWidth - 50) + 25;
         c.y = Math.random() * (sceneHeight - 400) + 25;
         circles.push(c);
