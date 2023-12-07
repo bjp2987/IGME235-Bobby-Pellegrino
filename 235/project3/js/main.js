@@ -51,9 +51,9 @@ function setup() {
 	createLabelsAndButtons();
 
 	//Create paddles
-    paddleP1 = new Paddle(70,10,0x0000FF,10,sceneWidth / 2);
+    paddleP1 = new Paddle(70,10,0x0000FF,10,sceneHeight / 2);
     gameScene.addChild(paddleP1);
-    paddleP2 = new Paddle(70,10,0xFF0000,580,sceneWidth / 2);
+    paddleP2 = new Paddle(70,10,0xFF0000,580,sceneHeight / 2);
     gameScene.addChild(paddleP2);
 
 	// #6 - Load Sounds
@@ -186,7 +186,7 @@ function createLabelsAndButtons(){
 
     gameOverSceneLabel = new PIXI.Text("");
     gameOverSceneLabel.style = textStyle;
-    gameOverSceneLabel.x = 40;
+    gameOverSceneLabel.x = 180;
     gameOverSceneLabel.y = sceneHeight/2 + 10;
     gameOverScene.addChild(gameOverSceneLabel);
 
@@ -256,6 +256,19 @@ function gameLoop(){
     if(keys["75"] || keys["98"]){
         paddleP2.moveDown(dt);
     }
+
+    if(paddleP1.y < 0){
+        paddleP1.y = 0;
+    }
+    if(paddleP1.y > sceneHeight - paddleP1.height){
+        paddleP1.y = sceneHeight - paddleP1.height;
+    }
+    if(paddleP2.y < 0){
+        paddleP2.y = 0;
+    }
+    if(paddleP2.y > sceneHeight - paddleP2.height){
+        paddleP2.y = sceneHeight - paddleP2.height;
+    }
 	
 	// #5 - Check for Collisions
 	for (let c of circles){
@@ -285,9 +298,22 @@ function gameLoop(){
     // get rid of dead circles
     circles = circles.filter(c=>c.isAlive);
 	
-	// #8 - Load next level
-    if (circles.length == 0){
+	
+    if(circles.length <= 4){
+        for(let c of circles){
+            if(c.fwd.x >= -0.5 && c.fwd.x <= 0.5){
+                c.fwd = getRandomUnitVector();
+            }
+            c.speed += 0.1;
+        }
+    }
+    // #8 - Load next level
+    if (circles.length <= 2){
 	    loadLevel();
+    }
+
+    if(P1Score > 20 || P2Score > 20){
+        end();
     }
 }
 
@@ -304,26 +330,19 @@ function keysReleased(e){
 function createCircles(numCircles){
     for(let i=0; i<numCircles; i++){
         let c = new Circle(10,0xFFFF00, 100);
-        c.x = Math.random() * (sceneWidth - 50) + 25;
-        c.y = Math.random() * (sceneHeight - 400) + 25;
+        c.x = 300;
+        c.y = (Math.random() * 140) + 230;
         circles.push(c);
         gameScene.addChild(c);
     }
 
     //orthogonal circles
-    for(let i = 0; i < numCircles/4; i++){
-        let c = new Circle(10, 0x00FFFF);
+    for(let i = 0; i < numCircles/5; i++){
+        let c = new Circle(10, 0x00FFFF, 50);
         c.speed = Math.random() * 100 + 100;
-        if(Math.random() < .5){
-            c.x = Math.random() * (sceneWidth - 50) + 25;
-            c.y = Math.random() * 100 + c.radius;
-            c.fwd = {x:0,y:1}
-        }
-        else{
-            c.x = Math.random() * 25 + c.radius;
-            c.y = Math.random() * (sceneHeight - 80) - c.radius;
-            c.fwd = {x:1, y:0};
-        }
+        c.x = 300;
+        c.y = c.y = (Math.random() * 140) + 230;
+        c.fwd = {x:1,y:0}
         circles.push(c);
         gameScene.addChild(c);
     }
@@ -340,7 +359,15 @@ function end(){
     circles.forEach(c=>gameScene.removeChild(c)); // concise arrow function with no brackets and no return
     circles = [];
 
-    gameOverSceneLabel.text = `Your final Score: ${P1Score}`;
+    if(P1Score > P2Score){
+        gameOverSceneLabel.text = `P1 Wins!`;
+    }
+    else if(P2Score > P1Score){
+        gameOverSceneLabel.text = `P2 Wins!`;
+    }
+    else{
+        gameOverSceneLabel.text = `Tie.`;
+    }
 
     gameOverScene.visible = true;
     gameScene.visible = false;
