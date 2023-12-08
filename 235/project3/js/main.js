@@ -51,23 +51,17 @@ function setup() {
 	createLabelsAndButtons();
 
 	//Create paddles
-    paddleP1 = new Paddle(70,10,0x0000FF,10,sceneHeight / 2);
+    paddleP1 = new Paddle(80,15,0x0000FF,10,sceneHeight / 2);
     gameScene.addChild(paddleP1);
-    paddleP2 = new Paddle(70,10,0xFF0000,580,sceneHeight / 2);
+    paddleP2 = new Paddle(80,15,0xFF0000,580,sceneHeight / 2);
     gameScene.addChild(paddleP2);
 
 	// #6 - Load Sounds
-    shootSound = new Howl({
-	    src: ['sounds/shoot.wav']
-    });
+    
 
-    hitSound = new Howl({
-	    src: ['sounds/hit.mp3']
-    });
-
-    fireballSound = new Howl({
-	    src: ['sounds/fireball.mp3']
-    });
+    //fireballSound = new Howl({
+	//    src: ['sounds/fireball.mp3']
+    //});
 		
 	// #8 - Start update loop
     app.ticker.add(gameLoop);
@@ -113,7 +107,7 @@ function createLabelsAndButtons(){
     startLabel2.y = 250;
     startScene.addChild(startLabel2);
 
-    let startLabel3 = new PIXI.Text("P2: I/Num8 for Up,\nK/Num2 for Down");
+    let startLabel3 = new PIXI.Text("P2: Num8 for Up,\nNum2 for Down\n(or I/K)");
     startLabel3.style = new PIXI.TextStyle({
         fill: 0xFF0000,
         fontSize: 20,
@@ -275,10 +269,12 @@ function gameLoop(){
         //5B circles collision
         if(c.isAlive && rectsIntersect(c,paddleP1)){
             c.reflectX(sceneWidth);
+            c.speed+= 2.5;
         }
         //5B circles collision
         if(c.isAlive && rectsIntersect(c,paddleP2)){
             c.reflectX(sceneWidth);
+            c.speed+= 2.5;
         }
     }
 	
@@ -298,11 +294,14 @@ function gameLoop(){
     // get rid of dead circles
     circles = circles.filter(c=>c.isAlive);
 	
-	
+	//corrective alignment
     if(circles.length <= 4){
         for(let c of circles){
-            if(c.fwd.x >= -0.5 && c.fwd.x <= 0.5){
-                c.fwd = getRandomUnitVector();
+            if(c.fwd.x >= -0.5 && c.fwd.x < 0){
+                c.fwd.x = 0.5;
+            }
+            if(c.fwd.x > 0 && c.fwd.x <= 0.5){
+                c.fwd.x = -0.5;
             }
             c.speed += 0.1;
         }
@@ -312,7 +311,7 @@ function gameLoop(){
 	    loadLevel();
     }
 
-    if(P1Score > 20 || P2Score > 20){
+    if(P1Score > 19 || P2Score > 19){
         end();
     }
 }
