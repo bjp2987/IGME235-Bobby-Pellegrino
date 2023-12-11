@@ -16,7 +16,7 @@ let stage;
 
 // game variables
 let startScene;
-let gameScene, paddleP1, paddleP2, scoreLabelP1, scoreLabelP2,shootSound,hitSound,fireballSound;
+let gameScene, paddleP1, paddleP2, scoreLabelP1, scoreLabelP2, hitWalls, p1Point, p2Point, paddlenoise, spawnballs;
 let gameOverScene;
 
 let circles = [];
@@ -57,26 +57,34 @@ function setup() {
     gameScene.addChild(paddleP2);
 
 	// #6 - Load Sounds
-    
+    hitWalls = new Howl({
+        src: ['../sounds/hitwalls.wav']
+    });
 
-    //fireballSound = new Howl({
-	//    src: ['sounds/fireball.mp3']
-    //});
+    p1Point = new Howl({
+        src: ['../sounds/p1point.wav']
+    });
+
+    p2Point = new Howl({
+        src: ['../sounds/p2point.wav']
+    });
+
+    paddlenoise = new Howl({
+        src: ['../sounds/paddle.wav']
+    });
+
+    spawnballs = new Howl({
+        src: ['../sounds/spawnballs.wav']
+    });
 		
 	// #8 - Start update loop
     app.ticker.add(gameLoop);
-	
-	// #9 - Start listening for click events on the canvas
-    //app.view.onclick = fireBullet;
-	
-	// Now our `startScene` is visible
-	// Clicking the button calls startGame()
 }
 
 function createLabelsAndButtons(){
     let buttonStyle = new PIXI.TextStyle({
         fill: 0xFFFFFF,
-        fontSize: 20,
+        fontSize: 30,
         fontFamily: "Silkscreen",
         stroke: 0x0000FF,
         strokeThickness: 8
@@ -110,20 +118,20 @@ function createLabelsAndButtons(){
     let startLabel2 = new PIXI.Text("P1: W for up, S for down");
     startLabel2.style = new PIXI.TextStyle({
         fill: 0x0000FF,
-        fontSize: 20,
+        fontSize: 25,
         fontFamily: "Silkscreen",
     });
-    startLabel2.x = 90;
+    startLabel2.x = 40;
     startLabel2.y = 290;
     startScene.addChild(startLabel2);
 
     let startLabel3 = new PIXI.Text("P2: Num8 for Up, Num2 for Down\n(or I/K)");
     startLabel3.style = new PIXI.TextStyle({
         fill: 0xFF0000,
-        fontSize: 20,
+        fontSize: 25,
         fontFamily: "Silkscreen",
     });
-    startLabel3.x = 90;
+    startLabel3.x = 40;
     startLabel3.y = 350;
     startScene.addChild(startLabel3);
 
@@ -143,7 +151,7 @@ function createLabelsAndButtons(){
     let textStyle = new PIXI.TextStyle({
         fill: 0xFFFFFF,
         fontSize: 14,
-        fontFamily: "Verdana",
+        fontFamily: "Silkscreen",
         stroke: 0xFF0000,
         strokeThickness: 4
     });
@@ -151,8 +159,8 @@ function createLabelsAndButtons(){
     scoreLabelP1 = new PIXI.Text();
     scoreLabelP1.style = new PIXI.TextStyle({
         fill: 0x0000FF,
-        fontSize: 40,
-        fontFamily: "Verdana",
+        fontSize: 50,
+        fontFamily: "Silkscreen",
     });
     scoreLabelP1.x = 160;
     scoreLabelP1.y = 5;
@@ -163,8 +171,8 @@ function createLabelsAndButtons(){
     scoreLabelP2 = new PIXI.Text();
     scoreLabelP2.style = new PIXI.TextStyle({
         fill: 0xFF0000,
-        fontSize: 40,
-        fontFamily: "Verdana",
+        fontSize: 50,
+        fontFamily: "Silkscreen",
     });;
     scoreLabelP2.x = 360;
     scoreLabelP2.y = 5;
@@ -173,11 +181,11 @@ function createLabelsAndButtons(){
 
     // 3 - set up `gameOverScene`
     // 3A - make game over text
-    let gameOverText = new PIXI.Text("Game Over!\n\n   :-O");
+    let gameOverText = new PIXI.Text("Game Over!");
     textStyle = new PIXI.TextStyle({
 	    fill: 0xFFFFFF,
-	    fontSize: 25,
-	    fontFamily: "Press Start 2P",
+	    fontSize: 40,
+	    fontFamily: "Silkscreen",
 	    stroke: 0xFF0000,
 	    strokeThickness: 6
     });
@@ -188,7 +196,7 @@ function createLabelsAndButtons(){
 
     gameOverSceneLabel = new PIXI.Text("");
     gameOverSceneLabel.style = textStyle;
-    gameOverSceneLabel.x = 180;
+    gameOverSceneLabel.x = 200;
     gameOverSceneLabel.y = sceneHeight/2 + 10;
     gameOverScene.addChild(gameOverSceneLabel);
 
@@ -238,7 +246,7 @@ function gameLoop(){
         c.move(dt);
         if(c.y <= c.radius || c.y >= sceneHeight - c.radius){
             c.reflectY(sceneHeight);
-            //c.move(dt);
+            hitWalls.play();
         }
     }
 
@@ -275,13 +283,9 @@ function gameLoop(){
 	// #5 - Check for Collisions
 	for (let c of circles){
         //5B circles collision
-        if(c.isAlive && rectsIntersect(c,paddleP1)){
+        if((c.isAlive && rectsIntersect(c,paddleP1)) || (c.isAlive && rectsIntersect(c,paddleP2))){
             c.reflectX(sceneWidth);
-            c.speed+= 2.5;
-        }
-        //5B circles collision
-        if(c.isAlive && rectsIntersect(c,paddleP2)){
-            c.reflectX(sceneWidth);
+            paddlenoise.play();
             c.speed+= 2.5;
         }
     }
@@ -291,10 +295,12 @@ function gameLoop(){
         //5B circles collision
         if(c.x <= -10){
             increaseP2ScoreBy(1);
+            p2Point.play();
             c.isAlive = false;
         }
         if(c.x >= sceneWidth + 10){
             increaseP1ScoreBy(1);
+            p1Point.play();
             c.isAlive = false;
         }
     }
@@ -317,6 +323,7 @@ function gameLoop(){
     // #8 - Load next level
     if (circles.length <= 2){
 	    loadLevel();
+        spawnballs.play();
     }
 
     if(P1Score > 19 || P2Score > 19){
@@ -336,7 +343,7 @@ function keysReleased(e){
 
 function createCircles(numCircles){
     for(let i=0; i<numCircles; i++){
-        let c = new Circle(10,0xFFFF00, 100);
+        let c = new Circle(10,0xFFFFFF, 100);
         c.x = 300;
         c.y = (Math.random() * 140) + 230;
         circles.push(c);
