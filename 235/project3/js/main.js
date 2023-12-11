@@ -75,9 +75,11 @@ function setup() {
 
 function createLabelsAndButtons(){
     let buttonStyle = new PIXI.TextStyle({
-        fill: 0xFF0000,
+        fill: 0xFFFFFF,
         fontSize: 20,
-        fontFamily: "Press Start 2P"
+        fontFamily: "Silkscreen",
+        stroke: 0x0000FF,
+        strokeThickness: 8
     });
 
     //1 set up "startScene"
@@ -85,37 +87,43 @@ function createLabelsAndButtons(){
     let startLabel1 = new PIXI.Text("Crazy Pong");
     startLabel1.style = new PIXI.TextStyle({
         fill: 0xFFFFFF,
-        fontSize: 40,
-        fontFamily: "Press Start 2P",
+        fontSize: 60,
+        fontFamily: "Silkscreen",
         stroke: 0xFF0000,
         strokeThickness: 6
     });
-    startLabel1.x = 90;
+    startLabel1.x = 60;
     startLabel1.y = 120;
     startScene.addChild(startLabel1);
 
+    let startLabelInstructions = new PIXI.Text("First to 20 points wins!");
+    startLabelInstructions.style = new PIXI.TextStyle({
+        fill: 0xFFFFFF,
+        fontSize: 30,
+        fontFamily: "Silkscreen"
+    });
+    startLabelInstructions.x = 60;
+    startLabelInstructions.y = 200;
+    startScene.addChild(startLabelInstructions);
+
     //1B make middle start label
-    let startLabel2 = new PIXI.Text("P1: W for up,\nS for down");
+    let startLabel2 = new PIXI.Text("P1: W for up, S for down");
     startLabel2.style = new PIXI.TextStyle({
         fill: 0x0000FF,
         fontSize: 20,
-        fontFamily: "Press Start 2P",
-        stroke: 0xFFFFFF,
-        strokeThickness: 4
+        fontFamily: "Silkscreen",
     });
-    startLabel2.x = 100;
-    startLabel2.y = 250;
+    startLabel2.x = 90;
+    startLabel2.y = 290;
     startScene.addChild(startLabel2);
 
-    let startLabel3 = new PIXI.Text("P2: Num8 for Up,\nNum2 for Down\n(or I/K)");
+    let startLabel3 = new PIXI.Text("P2: Num8 for Up, Num2 for Down\n(or I/K)");
     startLabel3.style = new PIXI.TextStyle({
         fill: 0xFF0000,
         fontSize: 20,
-        fontFamily: "Press Start 2P",
-        stroke: 0xFFFFFF,
-        strokeThickness: 4
+        fontFamily: "Silkscreen",
     });
-    startLabel3.x = 100;
+    startLabel3.x = 90;
     startLabel3.y = 350;
     startScene.addChild(startLabel3);
 
