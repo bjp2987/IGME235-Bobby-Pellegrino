@@ -12,35 +12,65 @@
         img{
             max-width: 50%;
         }
+        a{
+            background-color: white;
+        }
     </style>
 </head>
 <body>
-<h1>Crazy Pong(temporary name)</h1>
-<h2>High Concept</h2>
+<h1>Crazy Pong Proposal and Documentation</h1>
+<a href="#startdoc">Jump to documentation</a>
+<h2>Proposal</h2>
+<h3>High Concept</h3>
 <p>It's Pong but you have to deal with a lot more balls at once.
     The game would keep spawning balls until one of the players reaches a certain score.
     Once that happens, that player wins.</p>
-<h2>Genre</h2>
+<h3>Genre</h3>
 <p>Sports, Action</p>
-<h2>Platform</h2>
+<h3>Platform</h3>
 <p>Desktop web browser</p>
-<h2>Story</h2>
+<h3>Story</h3>
 <p>No real story here. It's just a game. Nothing crazy.</p>
-<h2>Aesthetics</h2>
+<h3>Aesthetics</h3>
 <p>This game would use pixel art. The design of the items and world would be kinda abstract. For sound, they will be 8 bit to fit the visual design.</p>
-<h2>Gameplay</h2>
+<h3>Gameplay</h3>
 <p>You have to use your paddle to hit as many balls as you can into your opponent's goal, while trying to avoid getting them in your goal.
     The game itself would be multiplayer, with 2 players using the keyboard to play against each other. 
     The controls would be displayed on the title screen before the game starts.
 </p>
-<h2>Mockups</h2>
+<h3>Mockups</h3>
 <img src="images/Mockup1.png"><br>
 <img src="images/Mockup2.png">
-<h2>Other</h2>
+<h3>Other</h3>
 <p>I'm thinking about using a certain PixiJS plugin, <a href="https://www.npmjs.com/package/pixi-timer">Pixi Timer</a>. This could help with making more balls spawn after a period of time.
 I'm not sure if I'll use it or not, but I at least wanted to make sure you were aware of it in case I do use it.</p>
-<h2>About the developer</h2>
+<h3>About the developer</h3>
 <p>I am a 3rd year Game Design and Development student. I have made multiple small games, where I have mainly been involved with programming and sound/music.
     I do have some experience making and handling pixel art as well.</p>
+
+<h2 id="startdoc">Documentation</h2>
+<p>In order to make this game, I started by using the example Circle Blast as a starting point. It already had good code for bouncing balls around the screen anyway.
+    I added and removed features from Circle Blast as appropriate to fit this game's needs. The first major step I took was creating the paddles and allowing them to move on screen.
+    I started with <a href="https://www.youtube.com/watch?v=cP-_beFbz_Q">this tutorial</a> to handle the process of handling keyboard inputs.
+    I adapted the code along with my own and Circle Blast's to fit with this project more appropriately. I also made it so that the balls bounce off the paddles when they touch them,
+    using the reflectX() method in Circle Blast. I made it so that a set of balls appear on screen at once, with the players having to try and defend as many of them as they can from entering their side.
+    When there are 4 or less remaining, I made it so that the balls slowly increase speed to make it more interesting. When there are only 2 remaining, more balls spawn.
+</p>
+<p>Player 1 uses W and S to move up and down, while Player 2 can either use Num8/Num2 or I/K to move up and down.
+    I added I/K just in case the user does not have a number pad.
+</p>
+<p>I encountered a problem while I was testing where certain balls ended up just bouncing up and down the screen barely moving to the side at all.
+    This caused situations where I had to wait for the balls to eventually move left or right for the game to continue.
+    To resolve this, I originally had the forward vector of the balls that were moving up and down get re-randomized.
+    However, this led to some players on feedback day saying that it was kinda confusing how a ball randomly bounced off of nothing for no reason, going in random directions.
+    So, I made a set of if statements so that the balls would redirect in a predictable direction instead of a purely random direction.
+</p>
+<p>I often had to copy and modify existing code relating to the player to account for there being 2 players in this game. Multiple score tallies, multiple start screen labels, etc.
+    I generated new sound effects using ChipTone. I put in some CSS to make the game go in the middle of the screen, as well as scale based on the size of the screen.
+    I added a new font named Silkscreen from Google Fonts. It does not look anything like the name would suggest. It's really more of a pixel art font.
+    Addtionally, the paddles in the game are instances of a Paddle class I created.
+</p>
+
+<a href="index.html">Back to the game</a>
 </body>
 </html>

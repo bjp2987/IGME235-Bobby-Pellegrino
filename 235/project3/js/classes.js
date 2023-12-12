@@ -27,6 +27,8 @@ class Circle extends PIXI.Graphics{
     }
 }
 
+//This class was created by me in order to allow for the paddles to be displayed on screen,
+//and also be able to move up and down the screen.
 class Paddle extends PIXI.Graphics{
     constructor(height, width, color=0x0000FF, x=0, y=0){
         super();
@@ -40,10 +42,12 @@ class Paddle extends PIXI.Graphics{
         this.speed = 250;
     }
 
+    //The paddle's y position is set upwards by a specific amount based on the speed * delta time.
     moveUp(dt=1/60){
         this.y -= this.speed * dt;
     }
 
+    //Same deal, but moving down the screen.
     moveDown(dt=1/60){
         this.y += this.speed * dt;
     }
